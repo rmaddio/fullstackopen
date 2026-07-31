@@ -12,13 +12,53 @@ const Button = ({handleClick, text}) => {
   )
 }
 
+const StatisticLine = (props) => {
+  return (
+    <div>{props.text} {props.value}</div>
+  )
+}
+
 const Statistics = (props) => {
+  if (props.good === 0 && props.neutral === 0 && props.bad === 0) {
+    return (
+      <p>No feedback given</p>
+    )
+  }
+
+  const all = props.good + props.neutral + props.bad
+  const average = ((props.good - props.bad) / all).toFixed(1)
+  const positive = (props.good / all * 100).toFixed(1)
   return (
     <>
       <Header text="statistics" />
-      <p>good {props.good}</p>
-      <p>neutral {props.neutral}</p>
-      <p>bad {props.bad}</p>
+      <table>
+        <tbody>
+          <tr>
+            <td>good</td>
+            <td>{props.good}</td>
+        </tr>
+        <tr>
+            <td>neutral</td>
+            <td>{props.neutral}</td>
+        </tr>
+        <tr>
+            <td>bad</td>
+            <td>{props.bad}</td>
+        </tr>
+        <tr>
+            <td>all</td>
+            <td>{all}</td>
+        </tr>
+        <tr>
+            <td>average</td>
+            <td>{average}</td>
+        </tr>
+        <tr>
+            <td>positive</td>
+            <td>{positive} %</td>
+        </tr>
+        </tbody>
+      </table>
     </>
   )
 }
