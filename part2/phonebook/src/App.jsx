@@ -22,11 +22,13 @@ function App() {
 
   const addPerson = (event) => {
     event.preventDefault();
+
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     };
+
+    console.log(persons.length + 1);
 
     if (persons.find(({ name }) => name === newName)) {
       alert(`${newName} is already added to phonebook`);

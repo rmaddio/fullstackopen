@@ -22,8 +22,8 @@
     },
     {
       "name": "John Doe",
-      "number": "11-100-1011",
-      "id": "1ZCQt_bt7C8"
+      "number": "12-123-1234",
+      "id": "B350U_pAxN8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
