@@ -3,12 +3,15 @@ import personService from "./services/persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
+import "./index.css";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [value, setValue] = useState("");
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     console.log("effect");
@@ -21,13 +24,26 @@ function App() {
 
   const updatePerson = (person) => {
     const changedPerson = { ...person, number: newNumber };
-    personService.update(person.id, changedPerson).then((response) => {
-      setPersons(
-        persons.map((p) => (p.id !== changedPerson.id ? p : response)),
-      );
-      setNewName("");
-      setNewNumber("");
-    });
+    personService
+      .update(person.id, changedPerson)
+      .then((response) => {
+        setPersons(
+          persons.map((p) => (p.id !== changedPerson.id ? p : response)),
+        );
+        setNewName("");
+        setNewNumber("");
+      })
+      .catch((error) => {
+        setMessage(
+          `Information of ${changedPerson.name} has already been removed from server`,
+        );
+        setPersons(persons.filter((p) => p.id !== changedPerson.id));
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+        setNewName("");
+        setNewNumber("");
+      });
   };
 
   const addPerson = (event) => {
@@ -57,6 +73,11 @@ function App() {
         setNewNumber("");
       });
     }
+
+    setMessage(`Added ${personObject.name}`);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
   };
 
   const handleDelete = (id) => {
@@ -85,6 +106,8 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={message} />
 
       <Filter value={value} handleValueChange={handleValueChange} />
 
